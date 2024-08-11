@@ -1,0 +1,18 @@
+Package: metaSurvMissCI
+Type: Package
+Title: Package for meta-analysis of survival rates with missing information on confidence intervals
+Version: 0.1.0
+Authors@R: 
+    person("Kazushi", "Maruo", , "kazushi.maruo@gmail.com", 
+           role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-3093-0386"))
+Description: This package include two functions: \code{impute_se_surv} and 
+  \code{forest_surv}. \code{impute_se_surv} imputate missing precision 
+  information for meta analysis of survival rates and calculate survival rates 
+  and their SEs on the transformed scale. \code{forest_surv} provides a forest 
+  plot of the meta-analysis of survival rates.
+License: MIT + file LICENSE
+Imports: meta
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.2
