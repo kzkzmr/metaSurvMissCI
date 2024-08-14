@@ -12,6 +12,9 @@ of survival rates and calculate survival rates and their SEs on the
 transformed scale. `forest_surv` provides a forest plot of the
 meta-analysis of survival rates.
 
+For more information about each function, type `?impute_se_surv` and
+`?forest_surv`.
+
 ## Installation
 
 You can install the development version of metaSurvMissCI from
