@@ -1,10 +1,10 @@
-#' Data for Systematic Review of Particle Beam Therapy for Chordomas
+#' Data for Systematic Review of Particle Beam Therapy for Chordoma
 #'
-#' The data from the systematic review of particle beam therapy for chordomas
+#' The data from the systematic review of particle beam therapy for chordoma
 #' (Saito et al., 2024). Data includes 7 studies for particle beam therapy
 #' and 5-year progression-free survival (PFS).
 #'
-#' @name metadata_chordomas
+#' @name metadata_chordoma
 #'
 #' @docType data
 #'
@@ -27,7 +27,7 @@
 #'                          the other studies.}
 #'   }
 #'
-#' @examples data(metadata_chordomas)
+#' @examples data(metadata_chordoma)
 #'
 #' @references \itemize{
 #'   \item Saito T et al. Systematic review and meta-analysis of particle beam

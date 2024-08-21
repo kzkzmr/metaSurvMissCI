@@ -33,8 +33,8 @@ library(meta)
 ```
 
 ``` r
-data("metadata_chordomas")
-impdata <- impute_se_surv(data = metadata_chordomas, St = "PFS5y",
+data("metadata_chordoma")
+impdata <- impute_se_surv(data = metadata_chordoma, St = "PFS5y",
                           LCL = "PFSL5y", UCL = "PFSU5y", n = "n",
                           nt = "n_5yPFS", ne = "ne_PFS", p = "pr_PFS")
 meta_imp <- metagen(TE = tr_St, seTE = tr_SE, studlab = Study,
