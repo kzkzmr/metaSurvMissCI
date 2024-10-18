@@ -78,6 +78,7 @@ impute_se_surv <- function(data, St, LCL, UCL, n, nt, ne, p,
   if (!is.data.frame(data)){
     stop("data must be data.frame.")
   }
+  data <- as.data.frame(data)
   R <- nrow(data)
   Sta <- data[, St]
   LCLa <- data[, LCL]
@@ -163,17 +164,20 @@ impute_se_surv <- function(data, St, LCL, UCL, n, nt, ne, p,
           methodr <- NA
         }
       }
-      if (methodr == "log-log"){
-        eta_sqrt <- (log(-log(LCLr)) - log(-log(UCLr))) / (2 * qnorm(0.975)) *
-          abs(log(Srt))
+      if (!is.na(methodr)){
+        if (methodr == "log-log") {
+          eta_sqrt <- (log(-log(LCLr)) - log(-log(UCLr)))/(2 * qnorm(0.975)) *
+            abs(log(Srt))
+        }
+        if (methodr == "log") {
+          eta_sqrt <- (log(UCLr) - log(LCLr))/(2 * qnorm(0.975))
+        }
+        if (methodr == "plain") {
+          eta_sqrt <- (UCLr - LCLr)/(2 * qnorm(0.975) *
+                                       Srt)
+        }
+        methoda[r] <- methodr
       }
-      if (methodr == "log"){
-        eta_sqrt <- (log(UCLr) - log(LCLr)) / (2 * qnorm(0.975))
-      }
-      if (methodr == "plain"){
-        eta_sqrt <- (UCLr - LCLr) / (2 * qnorm(0.975) * Srt)
-      }
-      methoda[r] <- methodr
       if (is.na(methodr)) {
         LCLr <- NA
         UCLr <- NA
