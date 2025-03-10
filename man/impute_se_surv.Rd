@@ -10,18 +10,21 @@ impute_se_surv(
   LCL,
   UCL,
   n,
-  nt,
-  ne,
-  p,
+  nt = NULL,
+  ne = NULL,
+  p = NULL,
   method = "log-log",
-  methodvar = NULL
+  methodvar = NULL,
+  symmety_lim = 0.1,
+  percent_scale = FALSE
 )
 }
 \arguments{
 \item{data}{a data frame that may include \code{St}, \code{LCL},
 \code{UCL}, \code{n}, \code{nt}, \code{ne}, \code{p}, and \code{methodvar}.
-If \code{LCL} and \code{UCL} are missing, either \code{nt}, \code{ne}, or
-\code{p} must be non-missing.}
+If \code{LCL} and \code{UCL} are missing, at least one of \code{nt},
+\code{ne}, or \code{p} must be provided. Among them, \code{nt} should be
+provided.}
 
 \item{St}{a character value for name of t year survival rate variable
 included in \code{data}.}
@@ -50,12 +53,24 @@ Default is "log-log".}
 
 \item{methodvar}{a character value for name of variable specifying the
 estimation method for confidence interval for each row in \code{data}.
-This variable is a character variable which can be "plain", "log", or
-"log-log". If there are studies for which CIs are not missing and
+This variable is a character variable which can take the values  "plain",
+"log", or "log-log". If there are studies for which CIs are not missing and
 the estimation method is known, it may be specified. Default is
 \code{NULL}.If not identified, one of the three estimation methods above is
 automatically selected based on the symmetry of the CI of the transformed
 measure.}
+
+\item{symmety_lim}{a numeric value for the threshold for the symmetry of the
+confidence interval, defined as the absolute value of the ratio of the
+distances from both confidence limits to the point estimate minus 1,
+on the selected transformed scale. If the symmetry exceeds this threshold,
+the confidence interval estimation method is not considered to be “plain,”
+“log,” or “log-log” and is replaced with \code{NA}.
+The default is 0.1.}
+
+\item{percent_scale}{a logical value (TRUE or FALSE).
+If TRUE, St, LCL, UCL, and p are provided as percentages (0–100%).
+If FALSE, they are provided as proportions (0–1). The default is FALSE.}
 }
 \value{
 a data frame with the following variables added to the input
@@ -64,13 +79,15 @@ Transformed scale is chosen with a \code{method} argument.
 \describe{
   \item{\code{tr_St}}{survival rate on the transformed scale.}
   \item{\code{tr_SE}}{SE of survival rate on the transformed scale.}
+  \item{\code{prt}}{parameter used for imputation. For detail, see Maruo
+  et al. (submitting)}
   \item{\code{imputed}}{1: imputed, 0: not imputed.}
 }
 }
 \description{
 \code{impute_se_surv} imputes missing precision information for meta analysis
  of survival rates based on the imputation method proposed by Maruo et al.
- (submitting) and calculate survival rates and their SEs on the transformed
+ (submitting) and calculates survival rates and their SEs on the transformed
  scale.
 }
 \details{
@@ -78,12 +95,12 @@ In meta-analyses of survival rates, precision information (i.e.,
 confidence interval) may be missing in some studies. Excluding studies
 with missing precision information may reduce the precision and accuracy
 of survival rate estimators in meta-analyses significantly.
-This function impute precision information using information commonly
+This function imputes precision information using information commonly
 available from study literature, such as sample size, number of events,
 and risk set size at a time point of interest.
 It then returns a data frame with the variables necessary for meta-analysis
-added. Even in the absence of missing data, it can be used as a
-pre-processing step in the meta-analysis of survival rates.
+added. Even when no data are missing, it can be used as a
+preprocessing step in the meta-analysis of survival rates.
 }
 \examples{
 library(metaSurvMissCI)

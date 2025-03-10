@@ -1,7 +1,7 @@
 Package: metaSurvMissCI
 Type: Package
 Title: Package for meta-analysis of survival rates with missing information on confidence intervals
-Version: 0.1.0
+Version: 0.1.2
 Authors@R: 
     person("Kazushi", "Maruo", , "kazushi.maruo@gmail.com", 
            role = c("aut", "cre"),

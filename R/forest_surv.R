@@ -1,37 +1,39 @@
-#' Forestplot for meta analysis of survival rates
+#' Forest plot for meta-analysis of survival rates
 #'
-#' \code{forest_surv} is a function that draws a forest plot using a
+#' \code{forest_surv} is a function to draw a forest plot using a
 #' \code{metagen} object of a survival rate meta-analysis based on the
-#' \code{metagen} function. It is assumed that the data frame output from
-#' the \code{impute_se_surv} function is used in the \code{metagen} function.
-#' @param metares a \code{metagen} object for the meta analysis of survival
+#' \code{metagen} function.
+#' The data frame output from the \code{impute_se_surv} function
+#' should be used as input to the \code{metagen} function.
+#'
+#' @param metares a \code{metagen} object for the meta-analysis of survival
 #'   rate.
 #' @param method a character value specifying the estimation method for
-#'   confidence interval used in the \code{impute_se_surv} function.
+#'   confidence intervals used in the \code{impute_se_surv} function.
 #'   Choose from "plain", "log", and "log-log". Default is "log-log".
 #' @param percent a logical value that specifies the scale of the display;
 #'   \code{TRUE} for a percentage scale (0 to 100),
 #'   \code{FALSE} for a rate scale (0 to 1).
 #'   Default is \code{TRUE}.
-#' @param xlim a numeric vector of length 2 that specifies horizontal limits of
-#'   the plot region. If unspecified, the function sets the horizontal plot
+#' @param xlim a numeric vector of length 2 that specifies the horizontal limits
+#'   of the plot region. If unspecified, the function sets the horizontal plot
 #'   limits to some sensible values.
-#' @param estlab a character value for labels for estimation target.
+#' @param estlab a character value for the label of the estimation target.
 #'   Default is "Survival (\%)".
 #' @param digits a numeric value specifying the number of decimal places to
 #'   be displayed. Default is \code{1}.
-#' @param ... additional arguments to be passed to the \code{forest} function.
+#' @param ... Additional arguments to be passed to the \code{forest} function.
 #'
 #' @details In meta-analyses of survival rates, precision information (i.e.,
-#' confidence interval) may be missing in some studies. Excluding studies
-#' with missing precision information may reduce the precision and accuracy
-#' of survival rate estimators in meta-analyses significantly.
-#' This function impute precision information using information commonly
+#' confidence intervals) may be missing in some studies.
+#' Excluding studies with missing precision information may significantly reduce
+#' the accuracy and reliability of survival rate estimators in meta-analyses.
+#' This function imputes precision information using data commonly
 #' available from study literature, such as sample size, number of events,
 #' and risk set size at a time point of interest.
 #' It then returns a data frame with the variables necessary for meta-analysis
-#' added. Even in the absence of missing data, it can be used as a
-#' pre-processing step in the meta-analysis of survival rates.
+#' added. Even when no data are missing, it can still be used as a
+#' preprocessing step in meta-analysis of survival rates.
 #'
 #' @return a forest plot created with the \code{forest} function in the
 #'   \code{meta} package.
