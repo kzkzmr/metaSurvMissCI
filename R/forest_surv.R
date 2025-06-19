@@ -22,6 +22,9 @@
 #'   Default is "Survival (\%)".
 #' @param digits a numeric value specifying the number of decimal places to
 #'   be displayed. Default is \code{1}.
+#' @param n a character value for the Variable name for the sample size of
+#'   each study. Default is “n”.
+#'
 #' @param ... Additional arguments to be passed to the \code{forest} function.
 #'
 #' @details In meta-analyses of survival rates, precision information (i.e.,
@@ -57,7 +60,8 @@
 #' @export
 
 forest_surv <- function(metares, method = "log-log", percent = TRUE,
-                          xlim = NULL, estlab = "Survival (%)", digits = 1,
+                        xlim = NULL, estlab = "Survival (%)", digits = 1,
+                        n = "n",
                           ...){
   metar_f <- metares
   cc <- 1
@@ -97,8 +101,14 @@ forest_surv <- function(metares, method = "log-log", percent = TRUE,
     metar_f$lower.common <- metares$lower.common * cc
     metar_f$upper.common <- metares$upper.common * cc
   }
-  forest(metar_f, xlim = xlim, leftcols = c("studlab", "n"),
+  if (metares$k == 1) {
+    rlab <- c(estlab, "[95%CI]")
+  } else {
+    rlab <- c(estlab, "[95%CI]", "W(common)", "W(random)")
+  }
+  forest(metar_f, xlim = xlim, leftcols = c("studlab", n),
          leftlabs = c("Study                   ", "N"),
-         rightlabs = c(estlab, "[95%CI]", "W(common)", "W(random)"),
+         rightlabs = rlab,
          digits = digits, ...)
+
 }

@@ -11,6 +11,7 @@ forest_surv(
   xlim = NULL,
   estlab = "Survival (\%)",
   digits = 1,
+  n = "n",
   ...
 )
 }
@@ -36,6 +37,9 @@ Default is "Survival (\%)".}
 
 \item{digits}{a numeric value specifying the number of decimal places to
 be displayed. Default is \code{1}.}
+
+\item{n}{a character value for the Variable name for the sample size of
+each study. Default is “n”.}
 
 \item{...}{Additional arguments to be passed to the \code{forest} function.}
 }
