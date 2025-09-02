@@ -42,7 +42,7 @@
 #'   \code{meta} package.
 #'
 #'
-#' @seealso \code{\link{meta}}
+#' @seealso \code{\link[meta]{metagen}}
 #'
 #' @examples
 #' library(metaSurvMissCI)

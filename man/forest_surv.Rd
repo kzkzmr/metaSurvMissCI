@@ -79,5 +79,5 @@ forest_surv(meta_imp, xlim = c(30, 100), estlab = "5-year PFS (\%)")
 
 }
 \seealso{
-\code{\link{meta}}
+\code{\link[meta]{metagen}}
 }

@@ -57,6 +57,12 @@
 #' added. Even when no data are missing, it can be used as a
 #' preprocessing step in the meta-analysis of survival rates.
 #'
+#' For studies with missing \code{LCL}, \code{UCL}, \code{nt}, \code{ne}, and
+#' \code{p}, the SE cannot be calculated and \code{NA} is returned.
+#' In such cases, one option is to exclude the study or impute \code{p}
+#' using the mean of returned \code{prt} from studies with available
+#' \code{LCL}, \code{UCL}, and \code{nt}.
+#'
 #' @return a data frame with the following variables added to the input
 #' data frame (\code{data}). These variables are used in a meta analysis.
 #' Transformed scale is chosen with a \code{method} argument.
@@ -73,7 +79,9 @@
 #'    survival rates when precision information is missing.
 #' }
 #'
-#' @seealso \code{\link{meta}}
+#' @seealso
+#' The returned data frame can be analyzed using functions such as
+#' \code{\link[meta]{metagen}} from the \pkg{meta} package.
 #'
 #' @examples
 #' library(metaSurvMissCI)
@@ -281,29 +289,38 @@ impute_se_surv <- function(data, St, LCL, UCL, n, nt = NULL, ne = NULL,
       }
       if (is.na(nrt)){
         if (is.na(nre) & is.na(pr)){
-          stop("ne or p must be given when LCL, UCL, and nt are not given.")
+          warning(paste0("All of ne, p, LCL, UCL, and nt are not given or
+          SE cannot be calculated from LCL and UCL for ", r, "th row.
+                         NA is imputed for SE" ))
+        } else {
+          if (!is.na(nre)) {
+            pr <- nre / nr
+          }
+          nrt <- nr * ((pr + 1) * Srt + pr - 1)/((pr - 1) * Srt + pr + 1)
         }
-        if (!is.na(nre)) {
-          pr <- nre / nr
-        }
-        nrt <- nr * ((pr + 1) * Srt + pr - 1)/((pr - 1) * Srt + pr + 1)
       }
-      nrt <- max(c(2, nrt))
-      nrt <- min(c(nrt, nr - 1))
-      prt <- ((nr + nrt) * Srt - nrt - nr) / ((nrt - nr) * Srt + nrt - nr)
-      prt[prt > 1] <- 1
-      prt[prt < 0] <- 0.01
-      prta[r] <- prt
+      if (is.na(nrt)){
+        prt <- NA
+        SEr <- NA
+        prta[r] <- NA
+      } else {
+        nrt <- max(c(2, nrt))
+        nrt <- min(c(nrt, nr - 1))
+        prt <- ((nr + nrt) * Srt - nrt - nr) / ((nrt - nr) * Srt + nrt - nr)
+        prt[prt > 1] <- 1
+        prt[prt < 0] <- 0.01
+        prta[r] <- prt
 
-      eta <- sum(1 / (nrt:(nr - 1)) * 1 / ((nrt - 1):(nr - 2))) * prt
-      if (method == "log-log"){
-        SEr <- sqrt(eta) / abs(log(Srt))
-      }
-      if (method == "log"){
-        SEr <- sqrt(eta)
-      }
-      if (method == "plain") {
-        SEr <- sqrt(eta) * Srt
+        eta <- sum(1 / (nrt:(nr - 1)) * 1 / ((nrt - 1):(nr - 2))) * prt
+        if (method == "log-log"){
+          SEr <- sqrt(eta) / abs(log(Srt))
+        }
+        if (method == "log"){
+          SEr <- sqrt(eta)
+        }
+        if (method == "plain") {
+          SEr <- sqrt(eta) * Srt
+        }
       }
     }
     est <- rbind(est, t(c(Srt_t, SEr)))
@@ -312,7 +329,7 @@ impute_se_surv <- function(data, St, LCL, UCL, n, nt = NULL, ne = NULL,
   data2$tr_St <- NA
   data2$tr_St[notna][notna2] <- est[, 1]
   data2$tr_SE <- NA
-  data2$tr_SE[notna][notna2] <-est[, 2]
+  data2$tr_SE[notna][notna2] <- est[, 2]
   data2$prt <- NA
   data2$prt[notna][notna2] <- prta
   data2$imputed <- NA

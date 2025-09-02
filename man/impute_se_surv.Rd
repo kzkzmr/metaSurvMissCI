@@ -101,6 +101,12 @@ and risk set size at a time point of interest.
 It then returns a data frame with the variables necessary for meta-analysis
 added. Even when no data are missing, it can be used as a
 preprocessing step in the meta-analysis of survival rates.
+
+For studies with missing \code{LCL}, \code{UCL}, \code{nt}, \code{ne}, and
+\code{p}, the SE cannot be calculated and \code{NA} is returned.
+In such cases, one option is to exclude the study or impute \code{p}
+using the mean of returned \code{prt} from studies with available
+\code{LCL}, \code{UCL}, and \code{nt}.
 }
 \examples{
 library(metaSurvMissCI)
@@ -117,5 +123,6 @@ mets <- impute_se_surv(data = metadata_chordoma, St = "PFS5y",
 }
 }
 \seealso{
-\code{\link{meta}}
+The returned data frame can be analyzed using functions such as
+\code{\link[meta]{metagen}} from the \pkg{meta} package.
 }
