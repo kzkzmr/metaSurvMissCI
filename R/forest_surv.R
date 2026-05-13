@@ -78,6 +78,14 @@ forest_surv <- function(metares, method = "log-log", percent = TRUE,
     metar_f$TE.common <- exp(-exp(metares$TE.common)) * cc
     metar_f$lower.common <- exp(-exp(metares$upper.common)) * cc
     metar_f$upper.common <- exp(-exp(metares$lower.common)) * cc
+    if (!is.null(metar_f$TE.random.w)) {
+      metar_f$TE.random.w <- exp(-exp(metares$TE.random.w)) * cc
+      metar_f$lower.random.w <- exp(-exp(metares$upper.random.w)) * cc
+      metar_f$upper.random.w <- exp(-exp(metares$lower.random.w)) * cc
+      metar_f$TE.common.w <- exp(-exp(metares$TE.common.w)) * cc
+      metar_f$lower.common.w <- exp(-exp(metares$upper.common.w)) * cc
+      metar_f$upper.common.w <- exp(-exp(metares$lower.common.w)) * cc
+    }
   }
   if (method == "log"){
     metar_f$TE <- exp(metares$TE) * cc
@@ -89,6 +97,14 @@ forest_surv <- function(metares, method = "log-log", percent = TRUE,
     metar_f$TE.common <- exp(metares$TE.common) * cc
     metar_f$lower.common <- exp(metares$lower.common) * cc
     metar_f$upper.common <- exp(metares$upper.common) * cc
+    if (!is.null(metar_f$TE.random.w)) {
+      metar_f$TE.random.w <- exp(metares$TE.random.w) * cc
+      metar_f$lower.random.w <- exp(metares$lower.random.w) * cc
+      metar_f$upper.random.w <- exp(metares$upper.random.w) * cc
+      metar_f$TE.common.w <- exp(metares$TE.common.w) * cc
+      metar_f$lower.common.w <- exp(metares$lower.common.w) * cc
+      metar_f$upper.common.w <- exp(metares$upper.common.w) * cc
+    }
   }
   if (method == "plain"){
     metar_f$TE <- metares$TE * cc
@@ -100,6 +116,14 @@ forest_surv <- function(metares, method = "log-log", percent = TRUE,
     metar_f$TE.common <- metares$TE.common * cc
     metar_f$lower.common <- metares$lower.common * cc
     metar_f$upper.common <- metares$upper.common * cc
+    if (!is.null(metar_f$TE.random.w)) {
+      metar_f$TE.random.w <- metares$TE.random.w * cc
+      metar_f$lower.random.w <- metares$lower.random.w * cc
+      metar_f$upper.random.w <- metares$upper.random.w * cc
+      metar_f$TE.common.w <- metares$TE.common.w * cc
+      metar_f$lower.common.w <- metares$lower.common.w * cc
+      metar_f$upper.common.w <- metares$upper.common.w * cc
+    }
   }
   if (metares$k == 1) {
     rlab <- c(estlab, "[95%CI]")
